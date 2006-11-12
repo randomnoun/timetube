@@ -1,0 +1,41 @@
+Timetube changelog
+
+sun 22/10
+  started (proclog): lists process and z-orders (+ multiple windows for a process)
+
+tue 24  
+ am: split proclog into separate files
+     proclog now saves screenshots; makes day directories 
+ pm: proclog back up to 0.2 sec per loop (writes to file, captures screenshot)
+     list changes in window order
+     now stores icons
+     hashes icon data to prevent duplicates, but still overwrites on start
+     TODO: doesn't capture all exes (only visible windows)
+     renamed as timetube
+  
+thu 26
+     purchased timetube.org domain
+     icon cache read at start
+
+thu nov 2
+ am: setup dns records for timetube.org
+
+sun 5 
+ am: started UI, made MainForm in GUI designer
+     bmp/gif/png/jpg compression display
+     browse button does directory lookup
+ pm: placeholder webpage at timetube.org; simple logo
+     created application icon
+     reads/writes settings to registry
+     UI now activates/deactivates logging; minimises to tray
+     wrote NSIS installer
+     traffic light icons; NB: red is 1 pixel too high
+     form validation; creates missing directories
+     some work on other image formats ; not working properly yet
+
+mon 6
+ pm: added dotnet check/install into NSIS: http://nsis.sourceforge.net/DotNET
+     uninstall timetube now in add/remove list
+     signed up to sourceforge ; created timetube project
+     TODO: add changelog to aboutbox
+
