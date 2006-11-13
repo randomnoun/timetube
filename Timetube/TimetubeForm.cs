@@ -161,28 +161,6 @@ namespace Timetube {
             this.notifyIcon1.Visible = false;
         }
 
-        private void cmdStartLogging_Click(object sender, EventArgs e) {
-            // txtStatus.Text = "  Logging is enabled";
-            if (IsFormValid()) {
-                this.picStatus.Image = global::Timetube.Properties.Resources.traffic_green;
-                cmdStartLogging.Enabled = false;
-                cmdStopLogging.Enabled = true;
-                EnableControls(false);
-
-                timeTube.SaveDirectory = txtSaveDirectory.Text;
-                timeTube.SaveFormat = cmbFormat.Text;
-                timeTube.SaveQuality = trkQuality.Value;
-                int intInterval = 10;
-                try {
-                    intInterval = Convert.ToInt32(txtInterval.Text);
-                    if (intInterval < 1) { intInterval = 1; }
-                } catch (FormatException) {
-                }
-                timeTube.Interval = intInterval;
-                timeTube.BeginCapture();
-            }            
-        }
-
         private bool IsFormValid() {
             if (!Directory.Exists(txtSaveDirectory.Text)) {
                 if (MessageBox.Show("The directory you have specified does not exist - create it ?", 
@@ -223,14 +201,65 @@ namespace Timetube {
             return true;
         }
 
+
+        private void cmdStartLogging_Click(object sender, EventArgs e) {
+            StartLogging();
+        }
+        
         private void cmdStopLogging_Click(object sender, EventArgs e) {
+            StopLogging();
+        }
+
+        private void cmdRecord_Click(object sender, EventArgs e) {
+            StartLogging();
+        }
+
+        private void cmdStop_Click(object sender, EventArgs e) {
+            StopLogging();
+        }
+
+        private void StartLogging() {
+            // txtStatus.Text = "  Logging is enabled";
+            if (IsFormValid()) {
+                this.picStatus.Image = global::Timetube.Properties.Resources.traffic_green;
+                cmdStartLogging.Enabled = false;
+                cmdStopLogging.Enabled = true;
+                cmdRecord.Enabled = false;
+                cmdStop.Enabled = true;
+                this.cmdRecord.ForeColor = System.Drawing.Color.Silver;
+                this.cmdStop.ForeColor = System.Drawing.Color.Black;
+
+                EnableControls(false);
+
+                timeTube.SaveDirectory = txtSaveDirectory.Text;
+                timeTube.SaveFormat = cmbFormat.Text;
+                timeTube.SaveQuality = trkQuality.Value;
+                int intInterval = 10;
+                try {
+                    intInterval = Convert.ToInt32(txtInterval.Text);
+                    if (intInterval < 1) { intInterval = 1; }
+                } catch (FormatException) {
+                }
+                timeTube.Interval = intInterval;
+                timeTube.BeginCapture();
+            }            
+        }
+
+        private void StopLogging() {
             // txtStatus.Text = "  Logging is disabled";
             picStatus.Image = global::Timetube.Properties.Resources.traffic_red;
             cmdStartLogging.Enabled = true;
             cmdStopLogging.Enabled = false;
+            cmdRecord.Enabled = true;
+            cmdStop.Enabled = false;
+            this.cmdRecord.ForeColor = System.Drawing.Color.Red;
+            this.cmdStop.ForeColor = System.Drawing.Color.Silver;
+
+
             EnableControls(true);
             timeTube.EndCapture();
         }
+
 
         private void cmdLogSettings_Click(object sender, EventArgs e) {
             MessageBox.Show("Just change them on the main form", "Not implemented");
@@ -283,6 +312,7 @@ namespace Timetube {
             ViewLogForm viewLogForm = new ViewLogForm(txtSaveDirectory.Text);
             viewLogForm.ShowDialog();
         }
+
 
 
     }

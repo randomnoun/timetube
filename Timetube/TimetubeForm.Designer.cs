@@ -57,8 +57,10 @@ namespace Timetube {
             this.cmdNotifyExit = new System.Windows.Forms.ToolStripMenuItem();
             this.picStatus = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.folderBrowser1 = new Timetube.FolderBrowser();
+            this.folderBrowser1 = new FolderBrowser();
             this.notifyIcon1 = new MattGriffith.Windows.Forms.NotifyIcon(this.components);
+            this.cmdRecord = new System.Windows.Forms.Button();
+            this.cmdStop = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picPreview)).BeginInit();
             this.grpOptions.SuspendLayout();
@@ -74,7 +76,7 @@ namespace Timetube {
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(589, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(640, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -102,6 +104,7 @@ namespace Timetube {
             // 
             // cmdStopLogging
             // 
+            this.cmdStopLogging.Enabled = false;
             this.cmdStopLogging.Name = "cmdStopLogging";
             this.cmdStopLogging.Size = new System.Drawing.Size(155, 22);
             this.cmdStopLogging.Text = "Stop logging";
@@ -167,7 +170,7 @@ namespace Timetube {
             this.picPreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.picPreview.Location = new System.Drawing.Point(12, 125);
             this.picPreview.Name = "picPreview";
-            this.picPreview.Size = new System.Drawing.Size(568, 243);
+            this.picPreview.Size = new System.Drawing.Size(619, 243);
             this.picPreview.TabIndex = 1;
             this.picPreview.TabStop = false;
             // 
@@ -363,11 +366,38 @@ namespace Timetube {
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
             // 
+            // cmdRecord
+            // 
+            this.cmdRecord.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
+            this.cmdRecord.ForeColor = System.Drawing.Color.Red;
+            this.cmdRecord.Location = new System.Drawing.Point(548, 94);
+            this.cmdRecord.Name = "cmdRecord";
+            this.cmdRecord.Size = new System.Drawing.Size(32, 26);
+            this.cmdRecord.TabIndex = 15;
+            this.cmdRecord.Text = "=";
+            this.cmdRecord.UseVisualStyleBackColor = true;
+            this.cmdRecord.Click += new System.EventHandler(this.cmdRecord_Click);
+            // 
+            // cmdStop
+            // 
+            this.cmdStop.Enabled = false;
+            this.cmdStop.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
+            this.cmdStop.ForeColor = System.Drawing.Color.Silver;
+            this.cmdStop.Location = new System.Drawing.Point(586, 94);
+            this.cmdStop.Name = "cmdStop";
+            this.cmdStop.Size = new System.Drawing.Size(32, 26);
+            this.cmdStop.TabIndex = 16;
+            this.cmdStop.Text = "<";
+            this.cmdStop.UseVisualStyleBackColor = true;
+            this.cmdStop.Click += new System.EventHandler(this.cmdStop_Click);
+            // 
             // TimetubeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(589, 380);
+            this.ClientSize = new System.Drawing.Size(640, 380);
+            this.Controls.Add(this.cmdStop);
+            this.Controls.Add(this.cmdRecord);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.picStatus);
             this.Controls.Add(this.picPreview);
@@ -436,5 +466,7 @@ namespace Timetube {
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripMenuItem cmdViewLog;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.Button cmdRecord;
+        private System.Windows.Forms.Button cmdStop;
     }
 }
