@@ -61,6 +61,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ScreenCapture.cs" />
+    <Compile Include="StringTokenizer.cs" />
     <Compile Include="TimeFormat.cs" />
     <Compile Include="Timetube.cs" />
     <Compile Include="MattGriffith_Win32.cs" />
@@ -69,6 +70,12 @@
     </Compile>
     <Compile Include="TimetubeForm.Designer.cs">
       <DependentUpon>TimetubeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewLogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewLogForm.Designer.cs">
+      <DependentUpon>ViewLogForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Win32.cs" />
     <Compile Include="HiPerfTimer.cs" />
@@ -92,6 +99,10 @@
     <EmbeddedResource Include="TimetubeForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TimetubeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewLogForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ViewLogForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

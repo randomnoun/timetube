@@ -18,3 +18,5 @@ obj\Release\Timetube.AboutBox1.resources
 obj\Release\Timetube.Properties.Resources.resources
 obj\Debug\Timetube.AboutBox1.resources
 obj\Debug\Timetube.Properties.Resources.resources
+obj\Debug\Timetube.ViewLogForm.resources
+obj\Release\Timetube.ViewLogForm.resources

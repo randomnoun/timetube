@@ -279,6 +279,11 @@ namespace Timetube {
             key.Close();
         }
 
+        private void cmdViewLog_Click(object sender, EventArgs e) {
+            ViewLogForm viewLogForm = new ViewLogForm(txtSaveDirectory.Text);
+            viewLogForm.ShowDialog();
+        }
+
 
     }
 }

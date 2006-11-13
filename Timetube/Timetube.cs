@@ -39,6 +39,22 @@ namespace Timetube {
         public override int GetHashCode() {
             return id;
         }
+
+        public static ProcessDetails ParseString(string s) {
+            // Console.WriteLine("Parsing p '" + s + "'");
+            Match m = Regex.Match(s, "^([0-9]+)\t(.*)\t(.*)\t(.*)$");
+            if (m.Success) {
+                ProcessDetails pd = new ProcessDetails();
+                pd.id = Convert.ToInt32(m.Groups[1].Value);
+                pd.processName = m.Groups[2].Value;
+                pd.processExe = m.Groups[3].Value;
+                pd.dimensions = m.Groups[4].Value;
+                pd.mainWindowTitle = m.Groups[5].Value;
+                return pd;
+            } else {
+                return null;
+            }        
+        }
     }
 
     class WindowDetails {
@@ -64,6 +80,26 @@ namespace Timetube {
         }
         public override int GetHashCode() {
             return pid + hwnd;
+        }
+
+        public static WindowDetails ParseString(string s) {
+            // Console.WriteLine("Parsing w '" + s + "'");
+            // was \\(([-0-9]*),([-0-9]*)\\)-\\(([-0-9]*),([-0-9]*)\\)
+            Match m = Regex.Match(s, "^([0-9]+) ([0-9]+) \\[([0-9]+)\\] (.*) '(.*)' '(.*)'$");
+            if (m.Success) {
+                WindowDetails wd = new WindowDetails();
+                wd.pid = Convert.ToInt32(m.Groups[1].Value);
+                wd.hwnd = Convert.ToInt32(m.Groups[2].Value);
+                wd.iconId = Convert.ToInt32(m.Groups[3].Value);
+                // was  "(" + m.Groups[4].Value + "," + m.Groups[5].Value + ")-(" + m.Groups[6].Value + "," + m.Groups[7].Value + ")";
+                wd.dimensions = m.Groups[4].Value;
+                wd.module = m.Groups[5].Value;
+                wd.title = m.Groups[6].Value;
+                return wd;
+            } else {
+                return null;
+            }
+
         }
     }
 
@@ -374,7 +410,7 @@ namespace Timetube {
                     Console.WriteLine("Duplicating hash found in icon cache");
                 } else {
                     int thisIconId = 0;
-                    Match m = Regex.Match(file, "^.*([0-9-.]+).png$");
+                    Match m = Regex.Match(file, "^.*?([0-9-.]+).png$");
                     if (m.Success) {
                         thisIconId = Convert.ToInt32(m.Groups[1].Value);
                     } else {

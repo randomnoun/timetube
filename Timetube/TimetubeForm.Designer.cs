@@ -57,6 +57,8 @@ namespace Timetube {
             this.notifyIcon1 = new MattGriffith.Windows.Forms.NotifyIcon(this.components);
             this.picStatus = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.cmdViewLog = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picPreview)).BeginInit();
             this.grpOptions.SuspendLayout();
@@ -82,6 +84,8 @@ namespace Timetube {
             this.cmdStartLogging,
             this.cmdStopLogging,
             this.toolStripSeparator1,
+            this.cmdViewLog,
+            this.toolStripSeparator3,
             this.cmdLogSettings,
             this.toolStripSeparator2,
             this.cmdExit});
@@ -92,38 +96,38 @@ namespace Timetube {
             // cmdStartLogging
             // 
             this.cmdStartLogging.Name = "cmdStartLogging";
-            this.cmdStartLogging.Size = new System.Drawing.Size(155, 22);
+            this.cmdStartLogging.Size = new System.Drawing.Size(179, 22);
             this.cmdStartLogging.Text = "Start logging";
             this.cmdStartLogging.Click += new System.EventHandler(this.cmdStartLogging_Click);
             // 
             // cmdStopLogging
             // 
             this.cmdStopLogging.Name = "cmdStopLogging";
-            this.cmdStopLogging.Size = new System.Drawing.Size(155, 22);
+            this.cmdStopLogging.Size = new System.Drawing.Size(179, 22);
             this.cmdStopLogging.Text = "Stop logging";
             this.cmdStopLogging.Click += new System.EventHandler(this.cmdStopLogging_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(152, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(176, 6);
             // 
             // cmdLogSettings
             // 
             this.cmdLogSettings.Name = "cmdLogSettings";
-            this.cmdLogSettings.Size = new System.Drawing.Size(155, 22);
+            this.cmdLogSettings.Size = new System.Drawing.Size(179, 22);
             this.cmdLogSettings.Text = "Log settings...";
             this.cmdLogSettings.Click += new System.EventHandler(this.cmdLogSettings_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(152, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(176, 6);
             // 
             // cmdExit
             // 
             this.cmdExit.Name = "cmdExit";
-            this.cmdExit.Size = new System.Drawing.Size(155, 22);
+            this.cmdExit.Size = new System.Drawing.Size(179, 22);
             this.cmdExit.Text = "Exit";
             this.cmdExit.Click += new System.EventHandler(this.cmdExit_Click);
             // 
@@ -347,6 +351,18 @@ namespace Timetube {
             this.label1.TabIndex = 14;
             this.label1.Text = "Status:";
             // 
+            // cmdViewLog
+            // 
+            this.cmdViewLog.Name = "cmdViewLog";
+            this.cmdViewLog.Size = new System.Drawing.Size(179, 22);
+            this.cmdViewLog.Text = "View log";
+            this.cmdViewLog.Click += new System.EventHandler(this.cmdViewLog_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 6);
+            // 
             // TimetubeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -418,5 +434,7 @@ namespace Timetube {
         private System.Windows.Forms.ToolStripMenuItem cmdNotifyExit;
         private System.Windows.Forms.PictureBox picStatus;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolStripMenuItem cmdViewLog;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }
