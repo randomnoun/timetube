@@ -30,6 +30,8 @@ namespace Timetube {
             this.cmdStartLogging = new System.Windows.Forms.ToolStripMenuItem();
             this.cmdStopLogging = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.cmdViewLog = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.cmdLogSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.cmdExit = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,12 +55,10 @@ namespace Timetube {
             this.notifyMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmdNotifyOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.cmdNotifyExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.folderBrowser1 = new FolderBrowser();
-            this.notifyIcon1 = new MattGriffith.Windows.Forms.NotifyIcon(this.components);
             this.picStatus = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.cmdViewLog = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.folderBrowser1 = new Timetube.FolderBrowser();
+            this.notifyIcon1 = new MattGriffith.Windows.Forms.NotifyIcon(this.components);
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picPreview)).BeginInit();
             this.grpOptions.SuspendLayout();
@@ -96,38 +96,50 @@ namespace Timetube {
             // cmdStartLogging
             // 
             this.cmdStartLogging.Name = "cmdStartLogging";
-            this.cmdStartLogging.Size = new System.Drawing.Size(179, 22);
+            this.cmdStartLogging.Size = new System.Drawing.Size(155, 22);
             this.cmdStartLogging.Text = "Start logging";
             this.cmdStartLogging.Click += new System.EventHandler(this.cmdStartLogging_Click);
             // 
             // cmdStopLogging
             // 
             this.cmdStopLogging.Name = "cmdStopLogging";
-            this.cmdStopLogging.Size = new System.Drawing.Size(179, 22);
+            this.cmdStopLogging.Size = new System.Drawing.Size(155, 22);
             this.cmdStopLogging.Text = "Stop logging";
             this.cmdStopLogging.Click += new System.EventHandler(this.cmdStopLogging_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(176, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(152, 6);
+            // 
+            // cmdViewLog
+            // 
+            this.cmdViewLog.Name = "cmdViewLog";
+            this.cmdViewLog.Size = new System.Drawing.Size(155, 22);
+            this.cmdViewLog.Text = "View log";
+            this.cmdViewLog.Click += new System.EventHandler(this.cmdViewLog_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(152, 6);
             // 
             // cmdLogSettings
             // 
             this.cmdLogSettings.Name = "cmdLogSettings";
-            this.cmdLogSettings.Size = new System.Drawing.Size(179, 22);
+            this.cmdLogSettings.Size = new System.Drawing.Size(155, 22);
             this.cmdLogSettings.Text = "Log settings...";
             this.cmdLogSettings.Click += new System.EventHandler(this.cmdLogSettings_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(176, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(152, 6);
             // 
             // cmdExit
             // 
             this.cmdExit.Name = "cmdExit";
-            this.cmdExit.Size = new System.Drawing.Size(179, 22);
+            this.cmdExit.Size = new System.Drawing.Size(155, 22);
             this.cmdExit.Text = "Exit";
             this.cmdExit.Click += new System.EventHandler(this.cmdExit_Click);
             // 
@@ -326,13 +338,6 @@ namespace Timetube {
             this.cmdNotifyExit.Size = new System.Drawing.Size(134, 22);
             this.cmdNotifyExit.Text = "Exit";
             // 
-            // notifyIcon1
-            // 
-            this.notifyIcon1.ContextMenu = null;
-            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "notifyIcon1";
-            this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
-            // 
             // picStatus
             // 
             this.picStatus.Image = global::Timetube.Properties.Resources.traffic_red;
@@ -351,17 +356,12 @@ namespace Timetube {
             this.label1.TabIndex = 14;
             this.label1.Text = "Status:";
             // 
-            // cmdViewLog
+            // notifyIcon1
             // 
-            this.cmdViewLog.Name = "cmdViewLog";
-            this.cmdViewLog.Size = new System.Drawing.Size(179, 22);
-            this.cmdViewLog.Text = "View log";
-            this.cmdViewLog.Click += new System.EventHandler(this.cmdViewLog_Click);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 6);
+            this.notifyIcon1.ContextMenu = null;
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "notifyIcon1";
+            this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
             // 
             // TimetubeForm
             // 

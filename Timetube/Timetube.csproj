@@ -47,6 +47,7 @@
     <Compile Include="AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataObjects.cs" />
     <Compile Include="FolderBrowser.cs">
       <SubType>Component</SubType>
     </Compile>

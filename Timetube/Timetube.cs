@@ -18,93 +18,19 @@ using System.Text.RegularExpressions;
 
 namespace Timetube {
 
-    class ProcessDetails {
-        public int id;
-        public string processName;
-        public string processExe;
-        public string dimensions;
-        public string mainWindowTitle;
 
-        public override String ToString() {
-            return String.Format("{0}\t{1}\t{2}\t{3}\t{4}", id, processName, processExe, dimensions, mainWindowTitle);
-        }
-        public override bool Equals(Object other) {
-            if (!(other is ProcessDetails)) { return false; }
-            ProcessDetails o = (ProcessDetails) other;
-            return (o.processName.Equals(processName) &&
-                o.processExe.Equals(processExe) &&  // -- we could comment this out
-                o.dimensions.Equals(dimensions) &&
-                o.mainWindowTitle.Equals(mainWindowTitle));
-        }
-        public override int GetHashCode() {
-            return id;
-        }
-
-        public static ProcessDetails ParseString(string s) {
-            // Console.WriteLine("Parsing p '" + s + "'");
-            Match m = Regex.Match(s, "^([0-9]+)\t(.*)\t(.*)\t(.*)$");
-            if (m.Success) {
-                ProcessDetails pd = new ProcessDetails();
-                pd.id = Convert.ToInt32(m.Groups[1].Value);
-                pd.processName = m.Groups[2].Value;
-                pd.processExe = m.Groups[3].Value;
-                pd.dimensions = m.Groups[4].Value;
-                pd.mainWindowTitle = m.Groups[5].Value;
-                return pd;
-            } else {
-                return null;
-            }        
-        }
-    }
-
-    class WindowDetails {
-        public int pid;
-        public int hwnd;
-        public string dimensions;  // @TODO use rc
-        public string module;
-        public string title;
-        // public string path;
-        public int iconId;
-
-
-        public override string ToString() {
-            return String.Format("{0} {1} [{2}] {3} '{4}' '{5}'", pid, hwnd, iconId, dimensions, module, title);
-        }
-        public override bool Equals(object other) {
-            if (!(other is WindowDetails)) { return false; }
-            WindowDetails o = (WindowDetails) other;
-            return (o.pid == pid && o.hwnd == hwnd &&
-                o.dimensions.Equals(dimensions) &&
-                ((o.module==null && module==null) || o.module.Equals(module)) &
-                ((o.title==null && title==null) || o.title.Equals(title)));
-        }
-        public override int GetHashCode() {
-            return pid + hwnd;
-        }
-
-        public static WindowDetails ParseString(string s) {
-            // Console.WriteLine("Parsing w '" + s + "'");
-            // was \\(([-0-9]*),([-0-9]*)\\)-\\(([-0-9]*),([-0-9]*)\\)
-            Match m = Regex.Match(s, "^([0-9]+) ([0-9]+) \\[([0-9]+)\\] (.*) '(.*)' '(.*)'$");
-            if (m.Success) {
-                WindowDetails wd = new WindowDetails();
-                wd.pid = Convert.ToInt32(m.Groups[1].Value);
-                wd.hwnd = Convert.ToInt32(m.Groups[2].Value);
-                wd.iconId = Convert.ToInt32(m.Groups[3].Value);
-                // was  "(" + m.Groups[4].Value + "," + m.Groups[5].Value + ")-(" + m.Groups[6].Value + "," + m.Groups[7].Value + ")";
-                wd.dimensions = m.Groups[4].Value;
-                wd.module = m.Groups[5].Value;
-                wd.title = m.Groups[6].Value;
-                return wd;
-            } else {
-                return null;
-            }
-
-        }
-    }
-
+    /// <summary>
+    /// This class is the main class responsible for creating the window, process and desktop snapshots.
+    /// 
+    /// Use the BeginCapture and EndCapture methods to start and stop monitoring.
+    /// </summary>
     class Timetube {
 
+        /// <summary>
+        /// Singleton object (used by other objects running on other threads). There are probably
+        /// better ways of doing this, but running two captures at the same time isn't likely to
+        /// be that useful.
+        /// </summary>
         static Timetube singleton = null;
 
         System.Timers.Timer timer = null;
@@ -115,6 +41,7 @@ namespace Timetube {
         Hashtable processMap = new Hashtable();
         Hashtable windowMap = new Hashtable();
         Hashtable iconMap = new Hashtable();
+
         public List<String> eventList = new List<String>();
         List<int> hwndOrder = new List<int>();
 
@@ -128,32 +55,36 @@ namespace Timetube {
             return singleton;
         }
 
-        // public properties
-        private string _SaveDirectory;
-        public string SaveDirectory {
-            get { return _SaveDirectory;  }
-            set { _SaveDirectory = value; }
-        }
-        private int _Interval;
-        public int Interval {
-            get { return _Interval; }
-            set { _Interval = value; }
-        }
-        private bool _IsRunning = false;
-        public bool IsRunning {
-            get { return _IsRunning; }
-        }
-        private string _SaveFormat = "JPEG";
-        public string SaveFormat {
-            get { return _SaveFormat; }
-            set { _SaveFormat = SaveFormat; }
-        }
-        private int _SaveQuality = 80;
-        public int SaveQuality {
-            get { return _SaveQuality; }
-            set { _SaveQuality = SaveQuality; }
-        }
+        // properties
+        private string saveDirectory;
+        private int interval;
+        private bool isRunning = false;
+        private string saveFormat = "JPEG";
+        private int saveQuality = 80;
 
+        public string SaveDirectory {
+            get { return saveDirectory;  }
+            set { saveDirectory = value; }
+        }
+        
+        public int Interval {
+            get { return interval; }
+            set { interval = value; }
+        }
+        
+        public bool IsRunning {
+            get { return isRunning; }
+        }
+        
+        public string SaveFormat {
+            get { return saveFormat; }
+            set { saveFormat = SaveFormat; }
+        }
+        
+        public int SaveQuality {
+            get { return saveQuality; }
+            set { saveQuality = SaveQuality; }
+        }
 
         public Hashtable getProcessMap() {
             Hashtable newMap = new Hashtable();
@@ -213,6 +144,16 @@ namespace Timetube {
             return newMap;
         }
 
+
+        /// <summary>
+        /// Create a summary of processes created/deleted since the last snapshot. Output
+        /// is in the form "P + (processdetails)" for new processes, "P - (processdetails)" for
+        /// removed processes. Processes are displayed one per line, in the format
+        /// specified by the <see cref="ProcessDetails"/> ToString method.
+        /// </summary>
+        /// 
+        /// <param name="sw">StreamWriter used to send output to.</param>
+        /// <param name="newMap">An object mapping integer pids to ProcessDetail objects</param>
         public void mergeProcessMap(StreamWriter sw, Hashtable newMap) {
             foreach (int pid in processMap.Keys) {
                 if (!newMap.ContainsKey(pid)) {
@@ -229,6 +170,15 @@ namespace Timetube {
             processMap = newMap;
         }
 
+        /// <summary>
+        /// Similar to mergeProcessMap, but creates a summary windows created/deleted since the 
+        /// last snapshot. Output is in the form "W + (windowdetails)" for new windows, 
+        /// "W - (windowdetails)" for old windows. Windows are displayed one per line, in the format
+        /// specified by the <see cref="WindowDetails"/> ToString method.
+        /// </summary>
+        /// 
+        /// <param name="sw">StreamWriter used to send output to.</param>
+        /// <param name="newMap">An object mapping integer hwnds to WindowDetail objects</param>
         public void mergeWindowMap(StreamWriter sw, Hashtable newMap) {
             foreach (string handle in windowMap.Keys) {
                 if (!newMap.ContainsKey(handle)) {
@@ -245,6 +195,17 @@ namespace Timetube {
             windowMap = newMap;
         }
 
+        /// <summary>
+        /// If window z-order has changed, creates a log in the supplied StreamWriter. 
+        /// Format is in the form "WO ! (hwnd list)" where the first element in the hwnd list
+        /// is the first (top-most) window, the second element is the second, and so on. 
+        /// 
+        /// Bottom-most windows whose orders are unchanged are not included in the list.
+        /// </summary>
+        /// 
+        /// <param name="sw">StreamWriter used to send output to.</param>
+        /// <param name="newMap">A list of hwnd handles, with the 1st element identifying the top-most window
+        /// </param>
         public void mergeHwndOrder(StreamWriter sw, List<int> newHwndOrder) {
             // work out the bottom-most window that's unchanged
             int unchanged = hwndOrder.Count-1;
@@ -264,6 +225,14 @@ namespace Timetube {
             hwndOrder = newHwndOrder;
         }
 
+        /// <summary>
+        /// Create a map of hwnd's to WindowDetails objects, as well as an ordered list of 
+        /// windows.
+        /// </summary>
+        /// 
+        /// <param name="newHwndOrder">a list which will be modified by this method to contain the
+        /// window list</param>
+        /// <returns>a map as described above</returns>
         public Hashtable getWindowMap(List<int> newHwndOrder) {
             Hashtable newMap = new Hashtable();
             Win32.RECT rc = new Win32.RECT();
@@ -301,7 +270,7 @@ namespace Timetube {
 
                     /* skip icon saving; check http://www.kennyandkarin.com/Kenny/CodeCorner/Tools/IconBrowser/
                      * later for some ideas
-                     * - adderss space problems ?
+                     * - has memory addresss issues ...
                     IntPtr hIcon = (IntPtr)Win32.SendMessage(hwnd, 0x007f, 0, 0);   // WM_GETICON
                     if (IntPtr.Zero != hIcon) {
                         Icon ic = Icon.FromHandle(hwnd);
@@ -346,14 +315,21 @@ namespace Timetube {
                         }
                     }
 
-
-
                 }
                 hwnd = Win32.GetNextWindow(hwnd, Win32.GW_HWNDNEXT);
             }
             return newMap;
         }
 
+        /// <summary>
+        /// Converts a bitmap (which would be an icon in this case) into an MD5 hash. We use this
+        /// to do collision-detections against our icon cache; the chances of having two icons
+        /// with the same hash are about 1 in 3402823669209384634633746074317700000000, 
+        /// which isn't the sort of thing I'd buy a lottery ticket in. 
+        /// </summary>
+        /// 
+        /// <param name="bitmap">bitmap to make a hash out of</param>
+        /// <returns>an MD5 hash of the thing</returns>
         public string getBitmapHash(Bitmap bitmap) {
             BitmapData data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), 
                 ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
@@ -387,7 +363,13 @@ namespace Timetube {
             return hash;
         }
         
-        // modified from http://blogs.msdn.com/brada/archive/2004/03/04/84069.aspx
+        /// <summary>
+        /// Recursively enumerate all files in a path that match a filepath pattern.
+        /// (Modified from http://blogs.msdn.com/brada/archive/2004/03/04/84069.aspx )
+        /// </summary>
+        /// <param name="path">path to search within</param>
+        /// <param name="glob">file pattern (e.g. "*.txt")</param>
+        /// <returns></returns>
         public static IEnumerable<string> GetFiles(string path, string glob) {
             foreach (string s in Directory.GetFiles(path, glob)) {
                 yield return s;
@@ -399,8 +381,11 @@ namespace Timetube {
             }
         }
 
+        /// <summary>
+        /// Load the existing icon cache, so that when we stop and start the program we don't
+        /// rewrite out any icons we've already stored on disk.
+        /// </summary>
         public void loadIconMap() {
-            Console.WriteLine("woot");
             foreach (string file in GetFiles(SaveDirectory + "\\iconCache", "*.png")) {
                 Console.WriteLine("* " + file);
                 Bitmap bm = new Bitmap(Bitmap.FromFile(file)); // cast ?
@@ -425,12 +410,18 @@ namespace Timetube {
             Console.WriteLine("Icon cachesize=" + iconNum);
         }
 
+        /// <summary>
+        /// We don't use this main method any more (the real one is in the MainClass.cs file),
+        /// but just keeping it around in case I want to do some testing later on - could be 
+        /// used to create a text-only version of the program.
+        /// </summary>
+        /// <param name="args">command-line arguments (ignored)</param>
+        /// <returns>always returns 0</returns>
         [MTAThread]
         public static int Main2(string[] args) {
             Timetube tt = Timetube.getInstance();
             tt.SaveDirectory = "c:\\temp\\newDir";
             tt.Interval = 10;
-
             Console.WriteLine("*** Started " + TimeFormat.GetDate() + " " + TimeFormat.GetTime());
 
             // initialise icon cache
@@ -446,10 +437,13 @@ namespace Timetube {
             return 0;
         }
 
+        /// <summary>
+        /// Start capturing data
+        /// </summary>
         public void BeginCapture() {
             // add timer
             if (!IsRunning) {
-                _IsRunning = true;
+                isRunning = true;
                 timer = new System.Timers.Timer(Interval * 1000);
                 timer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimer);
                 timer.Start();
@@ -467,9 +461,12 @@ namespace Timetube {
             }
         }
 
+        /// <summary>
+        /// Finish capturing data.
+        /// </summary>
         public void EndCapture() {
             if (IsRunning) {
-                _IsRunning = false;
+                isRunning = false;
                 timer.Stop();
                 win32ProcCreatedWatcher.Stop();
                 win32ProcCreatedWatcher.EventArrived -= eventArrivedEventHandler;
@@ -478,6 +475,14 @@ namespace Timetube {
             }
         }
 
+        /// <summary>
+        /// Timer entry point. At each timer tick, capture the desktop image, process list
+        /// and window list. If the last tick hasn't finished processing, then this method
+        /// returns without performing any processing. 
+        /// </summary>
+        /// 
+        /// <param name="sender">Not entirely sure. Probably the timer object, I guess</param>
+        /// <param name="e">The timer event</param>
         private void OnTimer(object sender, System.Timers.ElapsedEventArgs e) {
             if (working) {
                 Console.WriteLine("(skipping)");
