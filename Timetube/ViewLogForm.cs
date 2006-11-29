@@ -190,8 +190,10 @@ namespace Timetube {
             string jpgFile = dataDir + "\\" + dateTime.ToString("yyyy-MM-dd") + "\\desktop-" + 
                 dateTime.ToString("HH.mm.ss") + ".1234.jpg";
             backImage = Image.FromFile(jpgFile);
-            pbxScreen.Image = backImage;
-            pbxScreen.Invalidate();
+
+            desktopView.setImage(backImage);
+            // pbxScreen.Invalidate();
+            
             shownDate = dateTime;
 
             // get process list / windows
@@ -249,6 +251,7 @@ namespace Timetube {
                 Console.WriteLine("Adding wd '" + wd.title + "'");
                 ListViewItem lvi = new ListViewItem(new string[] { wd.title }, Convert.ToString(wd.iconId));
                 lvi.Text = wd.title;
+                lvi.Tag = wd;
                 // lvi.ImageIndex = lstProcess.SmallImageList.Images.IndexOfKey();
                 lstProcess.Items.Add(lvi);
             }
@@ -259,6 +262,17 @@ namespace Timetube {
         private void shadePanel_Paint(object sender, PaintEventArgs e) {
             Graphics g = e.Graphics;
             g.FillRectangle(Brushes.DarkGray, g.ClipBounds);
+        }
+
+        private void lstProcess_SelectedIndexChanged(object sender, EventArgs e) {
+            if (lstProcess.SelectedItems.Count > 0) {
+                ListViewItem lvi = lstProcess.SelectedItems[0];
+                WindowDetails wd = (WindowDetails) lvi.Tag;
+                lblStatusBar.Text = "Window " + wd.title + ": dimensions = " + wd.dimensions;
+                desktopView.setHighlight(wd.dimensionsRect);
+            } else {
+                lblStatusBar.Text = "No window selected";
+            }
         }
 
     }

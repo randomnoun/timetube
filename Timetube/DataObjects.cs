@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Drawing;
 
 namespace Timetube {
 
@@ -59,6 +60,8 @@ namespace Timetube {
         public int pid;
         public int hwnd;
         public string dimensions;  // @TODO use rc
+        public Rectangle dimensionsRect = new Rectangle(0, 0, 0, 0);
+
         public string module;
         public string title;
         // public string path;
@@ -83,16 +86,25 @@ namespace Timetube {
         public static WindowDetails ParseString(string s) {
             // Console.WriteLine("Parsing w '" + s + "'");
             // was \\(([-0-9]*),([-0-9]*)\\)-\\(([-0-9]*),([-0-9]*)\\)
-            Match m = Regex.Match(s, "^([0-9]+) ([0-9]+) \\[([0-9]+)\\] (.*) '(.*)' '(.*)'$");
+            // was Match m = Regex.Match(s, "^([0-9]+) ([0-9]+) \\[([0-9]+)\\] (.*) '(.*)' '(.*)'$");
+            Match m = Regex.Match(s, "^([0-9]+) ([0-9]+) \\[([0-9]+)\\] \\(([-0-9]*),([-0-9]*)\\)-\\(([-0-9]*),([-0-9]*)\\) '(.*)' '(.*)'$");
             if (m.Success) {
                 WindowDetails wd = new WindowDetails();
                 wd.pid = Convert.ToInt32(m.Groups[1].Value);
                 wd.hwnd = Convert.ToInt32(m.Groups[2].Value);
                 wd.iconId = Convert.ToInt32(m.Groups[3].Value);
                 // was  "(" + m.Groups[4].Value + "," + m.Groups[5].Value + ")-(" + m.Groups[6].Value + "," + m.Groups[7].Value + ")";
-                wd.dimensions = m.Groups[4].Value;
-                wd.module = m.Groups[5].Value;
-                wd.title = m.Groups[6].Value;
+                // wd.dimensions = m.Groups[4].Value;
+                wd.dimensions = "(" + m.Groups[4].Value + "," + m.Groups[5].Value + ")-(" + m.Groups[6].Value + "," + m.Groups[7].Value + ")";
+                wd.dimensionsRect = new Rectangle(
+                    Convert.ToInt32(m.Groups[4].Value),
+                    Convert.ToInt32(m.Groups[5].Value),
+                    Convert.ToInt32(m.Groups[6].Value) - Convert.ToInt32(m.Groups[4].Value),
+                    Convert.ToInt32(m.Groups[7].Value) - Convert.ToInt32(m.Groups[5].Value));
+
+
+                wd.module = m.Groups[8].Value;
+                wd.title = m.Groups[9].Value;
                 return wd;
             } else {
                 return null;

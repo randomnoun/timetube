@@ -29,14 +29,13 @@ namespace Timetube {
             this.calDate = new System.Windows.Forms.MonthCalendar();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblStatusBar = new System.Windows.Forms.ToolStripStatusLabel();
-            this.pbxScreen = new System.Windows.Forms.PictureBox();
             this.trkTime = new System.Windows.Forms.TrackBar();
             this.lblStartTime = new System.Windows.Forms.Label();
             this.lblStopTime = new System.Windows.Forms.Label();
             this.shadePanel = new System.Windows.Forms.Panel();
+            this.desktopView = new DesktopViewControl();
             this.groupBox1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxScreen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trkTime)).BeginInit();
             this.SuspendLayout();
             // 
@@ -47,7 +46,7 @@ namespace Timetube {
             this.groupBox1.Controls.Add(this.lstProcess);
             this.groupBox1.Location = new System.Drawing.Point(496, 179);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(178, 171);
+            this.groupBox1.Size = new System.Drawing.Size(178, 197);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Processes and windows";
@@ -62,10 +61,11 @@ namespace Timetube {
             this.lstProcess.GridLines = true;
             this.lstProcess.Location = new System.Drawing.Point(6, 19);
             this.lstProcess.Name = "lstProcess";
-            this.lstProcess.Size = new System.Drawing.Size(166, 146);
+            this.lstProcess.Size = new System.Drawing.Size(166, 172);
             this.lstProcess.TabIndex = 0;
             this.lstProcess.UseCompatibleStateImageBehavior = false;
             this.lstProcess.View = System.Windows.Forms.View.Details;
+            this.lstProcess.SelectedIndexChanged += new System.EventHandler(this.lstProcess_SelectedIndexChanged);
             // 
             // columnHeader1
             // 
@@ -85,7 +85,7 @@ namespace Timetube {
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatusBar});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 353);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 379);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(692, 22);
             this.statusStrip1.TabIndex = 4;
@@ -97,24 +97,11 @@ namespace Timetube {
             this.lblStatusBar.Size = new System.Drawing.Size(80, 17);
             this.lblStatusBar.Text = "Status bar text";
             // 
-            // pbxScreen
-            // 
-            this.pbxScreen.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbxScreen.BackColor = System.Drawing.Color.Black;
-            this.pbxScreen.Location = new System.Drawing.Point(12, 12);
-            this.pbxScreen.Name = "pbxScreen";
-            this.pbxScreen.Size = new System.Drawing.Size(472, 287);
-            this.pbxScreen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbxScreen.TabIndex = 0;
-            this.pbxScreen.TabStop = false;
-            // 
             // trkTime
             // 
             this.trkTime.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.trkTime.Location = new System.Drawing.Point(12, 305);
+            this.trkTime.Location = new System.Drawing.Point(12, 317);
             this.trkTime.Name = "trkTime";
             this.trkTime.Size = new System.Drawing.Size(472, 45);
             this.trkTime.TabIndex = 5;
@@ -124,7 +111,7 @@ namespace Timetube {
             // 
             this.lblStartTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblStartTime.BackColor = System.Drawing.Color.Transparent;
-            this.lblStartTime.Location = new System.Drawing.Point(12, 337);
+            this.lblStartTime.Location = new System.Drawing.Point(12, 349);
             this.lblStartTime.Name = "lblStartTime";
             this.lblStartTime.Size = new System.Drawing.Size(100, 13);
             this.lblStartTime.TabIndex = 6;
@@ -134,7 +121,7 @@ namespace Timetube {
             // 
             this.lblStopTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblStopTime.BackColor = System.Drawing.Color.Transparent;
-            this.lblStopTime.Location = new System.Drawing.Point(384, 337);
+            this.lblStopTime.Location = new System.Drawing.Point(384, 349);
             this.lblStopTime.Name = "lblStopTime";
             this.lblStopTime.Size = new System.Drawing.Size(100, 13);
             this.lblStopTime.TabIndex = 7;
@@ -145,31 +132,40 @@ namespace Timetube {
             // 
             this.shadePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.shadePanel.Location = new System.Drawing.Point(12, 345);
+            this.shadePanel.Location = new System.Drawing.Point(12, 368);
             this.shadePanel.Name = "shadePanel";
             this.shadePanel.Size = new System.Drawing.Size(475, 8);
             this.shadePanel.TabIndex = 8;
             this.shadePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.shadePanel_Paint);
             // 
+            // desktopView
+            // 
+            this.desktopView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.desktopView.Location = new System.Drawing.Point(12, 12);
+            this.desktopView.Name = "desktopView";
+            this.desktopView.Size = new System.Drawing.Size(472, 299);
+            this.desktopView.TabIndex = 9;
+            // 
             // ViewLogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(692, 375);
+            this.ClientSize = new System.Drawing.Size(692, 401);
+            this.Controls.Add(this.desktopView);
             this.Controls.Add(this.lblStartTime);
             this.Controls.Add(this.lblStopTime);
             this.Controls.Add(this.shadePanel);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.calDate);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.pbxScreen);
             this.Controls.Add(this.trkTime);
             this.Name = "ViewLogForm";
-            this.Text = "ViewLogForm";
+            this.Text = "Desktop History";
             this.groupBox1.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxScreen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trkTime)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -178,7 +174,6 @@ namespace Timetube {
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pbxScreen;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.MonthCalendar calDate;
         private System.Windows.Forms.StatusStrip statusStrip1;
@@ -189,5 +184,6 @@ namespace Timetube {
         private System.Windows.Forms.ListView lstProcess;
         private System.Windows.Forms.Panel shadePanel;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+        private DesktopViewControl desktopView;
     }
 }

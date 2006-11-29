@@ -20,3 +20,5 @@ obj\Debug\Timetube.AboutBox1.resources
 obj\Debug\Timetube.Properties.Resources.resources
 obj\Debug\Timetube.ViewLogForm.resources
 obj\Release\Timetube.ViewLogForm.resources
+obj\Release\Timetube.DesktopViewControl.resources
+obj\Debug\Timetube.DesktopViewControl.resources

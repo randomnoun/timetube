@@ -48,6 +48,12 @@
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
     <Compile Include="DataObjects.cs" />
+    <Compile Include="DesktopViewControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DesktopViewControl.Designer.cs">
+      <DependentUpon>DesktopViewControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="FolderBrowser.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -87,6 +93,10 @@
     <EmbeddedResource Include="AboutBox1.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AboutBox1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DesktopViewControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DesktopViewControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MattGriffith_NotifyIcon.resx">
       <DependentUpon>MattGriffith_NotifyIcon.cs</DependentUpon>
